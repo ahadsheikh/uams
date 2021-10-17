@@ -12,9 +12,9 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::all();
+        $events = $request->user()->events;
         return response()->json($events);
     }
 
@@ -45,10 +45,18 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request ,$id)
     {
         $event = Event::findOrFail($id);
-        return response()->json($event);
+        if($request->user()->id == $event->user_id){
+            return response()->json($event);
+        }else{
+            return response()->json(
+                [
+                    "error" => "Permission denied"
+                ], 403
+            );
+        }
     }
 
     /**

@@ -12,9 +12,9 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::all();
+        $tasks = $request->user()->tasks;
         return response()->json($tasks);
     }
 
@@ -43,10 +43,18 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $task = Task::findOrFail($id);
-        return response()->json($task);
+        if($request->user()->id == $task->user_id){
+            return response()->json($task);
+        }else{
+            return response()->json(
+                [
+                    "error" => "Permission denied"
+                ], 403
+            );
+        }
     }
 
     /**
