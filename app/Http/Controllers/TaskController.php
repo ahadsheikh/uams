@@ -68,8 +68,10 @@ class TaskController extends Controller
     {
         $fields = $request->validate([
             'title' => 'string',
-            'description' => 'string'
+            'description' => 'string',
+            'completed' => 'boolean'
         ]);
+
 
         $task = Task::findOrFail($id);
         $user = $request->user();
