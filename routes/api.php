@@ -48,6 +48,8 @@ Route::get('/appointments', function () {
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/forget_password', [UserController::class, 'forgetPassword']);
+Route::post('/reset_password', [UserController::class, 'resetPassword']);
 
 # Need to guard by auth middleware
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -123,5 +124,48 @@ class UserController extends Controller
                 ], 403
             );
         }
+    }
+
+    public function forgetPassword()
+    {
+        $email = request()->validate([
+            'email' => 'required|email'
+        ]);
+
+        $user = User::where('email', $email['email'])->first();
+
+        if(!$user){
+            return response()->json(
+                [
+                    "error" => "User not found"
+                ], 404
+            );
+        }
+
+        $response = [
+            'user_id' => $user->id,
+        ];
+
+        return response()->json($response);
+    }
+
+
+    public function resetPassword()
+    {
+        $fields = request()->validate([
+            'user_id' => 'required',
+            'new_password' => 'required'
+        ]);
+
+        $user = User::findOrFail($fields['user_id']);
+
+        $user->password = Hash::make($fields['new_password']);
+        $user->save();
+
+        return response()->json(
+            [
+                "message" => "Password reset successfully"
+            ], 200
+        );
     }
 }
