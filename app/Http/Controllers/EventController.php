@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use DateTime;
 
 class EventController extends Controller
 {
@@ -14,8 +15,23 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
+        $month = $request->month;
+        $year = $request->year;
         $events = $request->user()->events;
-        return response()->json($events);
+        if(isset($month) && isset($year)){
+            $eventsInAMonth = array();
+            foreach($events as $event){
+                $st = new DateTime($event->start_time);
+                $et = new DateTime($event->end_time);
+                if(($st->format('m') == $month || $st->format('m') == $month ) 
+                    && ($et->format('Y') == $year || $et->format('Y') == $year)){
+                    array_push($eventsInAMonth, $event);
+                }
+            }
+            return response()->json($eventsInAMonth);
+        }else{
+            return response()->json($events);
+        }
     }
 
     /**
