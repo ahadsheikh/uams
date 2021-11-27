@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ParadeStateController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AbsenceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\TextUI\XmlConfiguration\Group;
@@ -66,4 +68,6 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/logout', [UserController::class, 'logout']);
     Route::apiResource('/tasks', TaskController::class);
     Route::apiResource('/events', EventController::class);
+    Route::apiResource('/paradestates', ParadeStateController::class);
+    Route::apiResource('/absences', AbsenceController::class);
 });
