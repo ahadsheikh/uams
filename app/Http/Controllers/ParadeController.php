@@ -69,7 +69,7 @@ class ParadeController extends Controller
         $active = Array();
         foreach($fields['active'] as $row){
             $row['date'] = $fields['date'];
-            $row['table_type'] = 'total';
+            $row['table_type'] = 'active';
             $r = ParadeState::create($row);  
 
             unset($r['date']);
@@ -81,7 +81,7 @@ class ParadeController extends Controller
         $present = Array();
         foreach($fields['present'] as $row){
             $row['date'] = $fields['date'];
-            $row['table_type'] = 'total';
+            $row['table_type'] = 'present';
             $r = ParadeState::create($row);  
 
             unset($r['date']);
