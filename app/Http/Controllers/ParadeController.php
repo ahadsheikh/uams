@@ -41,7 +41,7 @@ class ParadeController extends Controller
             'total' => 'required|array',
             'active' => 'required|array',
             'present' => 'required|array',
-            'course_of_presence' => 'required|array'
+            'cause_of_absence' => 'required|array'
         ]);
 
         $date = $fields['date'];
@@ -90,15 +90,15 @@ class ParadeController extends Controller
         }
         $data['present'] = $present;
 
-        $course_of_presence = Array();
-        foreach($fields['course_of_presence'] as $row){
+        $cause_of_absence = Array();
+        foreach($fields['cause_of_absence'] as $row){
             $row['date'] = $fields['date'];
             $r = Absence::create($row);  
 
             unset($r['date']);
-            array_push($course_of_presence, $r);
+            array_push($cause_of_absence, $r);
         }
-        $data['course_of_presence'] = $course_of_presence;
+        $data['cause_of_absence'] = $cause_of_absence;
 
         return response()->json($data);
     }        
