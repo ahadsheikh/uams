@@ -109,12 +109,21 @@ class ParadeController extends Controller
         if(isset($date)){
             ParadeState::where('date', $date)->delete();
             Absence::where('date', $date)->delete();
-            $data['statue'] = true;
+            $data['status'] = true;
             $data['message'] = "All parade data is deleted in date $date";
         }else{
-            $data['statue'] = false;
+            $data['status'] = false;
             $data['message'] = 'Date parameter required. Data is not deleted';
         }
+        return response()->json($data, 200);
+    }
+
+    public function remove_all(Request $request)
+    {
+        ParadeState::truncate();
+        Absence::truncate();
+        $data['status'] = true;
+        $data['message'] = "All parade data is deleted";
         return response()->json($data, 200);
     }
 }

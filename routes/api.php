@@ -75,4 +75,5 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/parade/create', [ParadeController::class, 'create']);
     Route::delete('/parade/remove', [ParadeController::class, 'remove_by_date']);
     Route::get('/parade', [ParadeController::class, 'index']);
+    Route::delete('/parade/removeall', [ParadeController::class, 'remove_all']);
 });
