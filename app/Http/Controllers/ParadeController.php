@@ -25,7 +25,7 @@ class ParadeController extends Controller
                 'total' => $total,
                 'active' => $active,
                 'present' => $present,
-                'absent' => $absent
+                'cause_of_absence' => $absent
             ];
         }else{
             $data['statue'] = false;
