@@ -5,10 +5,11 @@ use App\Http\Controllers\ParadeStateController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsenceController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\ParadeController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\WorkController;
 use Illuminate\Support\Facades\Route;
-use PHPUnit\TextUI\XmlConfiguration\Group;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,9 +72,15 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::apiResource('/events', EventController::class);
     Route::apiResource('/paradestates', ParadeStateController::class);
     Route::apiResource('/absences', AbsenceController::class);
+    Route::apiResource('/offices', OfficeController::class);
+    Route::apiResource('/works', WorkController::class);
+    Route::apiResource('/files', FileController::class);
+
+    // Route::get('/files/download/{id}', [FileController::class, 'download']);    
 
     Route::post('/parade/create', [ParadeController::class, 'create']);
     Route::delete('/parade/remove', [ParadeController::class, 'remove_by_date']);
     Route::get('/parade', [ParadeController::class, 'index']);
     Route::delete('/parade/removeall', [ParadeController::class, 'remove_all']);
 });
+
