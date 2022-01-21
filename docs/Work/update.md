@@ -1,8 +1,8 @@
-# Update Office
+# Update Work
 
-Update the Office.
+Update the Work.
 
-**URL** : `/api/offices/:pk/`
+**URL** : `/api/works/:pk/`
 
 **Method** : `PUT`
 
@@ -14,7 +14,7 @@ Update the Office.
 
 ```json
 {   
-    "name": "A Office Updated",
+    "title": "A Office Updated",
 }
  ```
 
@@ -27,13 +27,13 @@ Update the Office.
 ```json
 {
     "id": 123,
-    "name": "A Office Updated",
+    "title": "A Office Updated",
 }
 ```
 
 ## Error Response
 
-**Condition** : Office does not exist at URL
+**Condition** : Work does not exist at URL
 
 **Code** : `404 NOT FOUND`
 

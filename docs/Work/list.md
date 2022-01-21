@@ -1,8 +1,8 @@
-# Show all Offices
+# Show all Works
 
-Show all Offices.
+Show all Works.
 
-**URL** : `/api/offices/`
+**URL** : `/api/works/`
 
 **Method** : `GET`
 
@@ -18,15 +18,15 @@ Show all Offices.
 [
     {
         "id": 123,
-        "name": "A Office",
+        "title": "A Office",
     },
     {
         "id": 124,
-        "name": "B Office",
+        "title": "B Office",
     },
     {
         "id": 125,
-        "name": "C Office",
+        "title": "C Office",
     }
 ]
 ```

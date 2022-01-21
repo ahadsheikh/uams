@@ -1,8 +1,8 @@
-# Create Office
+# Create Work
 
-Create an Office that can operate some files.
+Create an Work that can operate some files.
 
-**URL** : `/api/offices/`
+**URL** : `/api/works/`
 
 **Method** : `POST`
 
@@ -12,7 +12,7 @@ Create an Office that can operate some files.
 
 ```json
 {
-    "name": "A Office",
+    "title": "New Work",
 }
 ```
 
@@ -25,7 +25,7 @@ Create an Office that can operate some files.
 ```json
 {
     "id": 123,
-    "name": "A Office",
+    "title": "New Work",
 }
 ```
 
@@ -39,7 +39,7 @@ Create an Office that can operate some files.
 
 ```json
 {
-    "name": [
+    "title": [
         "This field is required."
     ]
 }

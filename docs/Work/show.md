@@ -1,8 +1,8 @@
-# Show Single Office
+# Show Single Work
 
-Show a single Office.
+Show a single Work.
 
-**URL** : `/api/offices/:pk/`
+**URL** : `/api/works/:pk/`
 
 **URL Parameters** : `pk=[integer]` where `pk` is the ID of the Office on the
 server.
@@ -20,13 +20,13 @@ server.
 ```json
 {
     "id": 345,
-    "name": "A office",
+    "title": "A office",
 }
 ```
 
 ## Error Responses
 
-**Condition** : If Account does not exist with `id` of provided `pk` parameter.
+**Condition** : If Work does not exist with `id` of provided `pk` parameter.
 
 **Code** : `404 NOT FOUND`
 

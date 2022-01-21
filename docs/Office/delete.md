@@ -1,23 +1,19 @@
-# Delete User's Account
+# Delete a Office
 
-Delete the Account of the Authenticated User if they are Owner.
+Delete the Office.
 
-**URL** : `/api/accounts/:pk/`
+**URL** : `/api/offices/:pk/`
 
-**URL Parameters** : `pk=[integer]` where `pk` is the ID of the Account in the
+**URL Parameters** : `pk=[integer]` where `pk` is the ID of the Office in the
 database.
 
 **Method** : `DELETE`
 
 **Auth required** : YES
 
-**Permissions required** : User is Account Owner
-
-**Data** : `{}`
-
 ## Success Response
 
-**Condition** : If the Account exists.
+**Condition** : If the Office exists.
 
 **Code** : `204 NO CONTENT`
 
@@ -25,21 +21,8 @@ database.
 
 ## Error Responses
 
-**Condition** : If there was no Account available to delete.
+**Condition** : If there was no Office available to delete.
 
 **Code** : `404 NOT FOUND`
 
 **Content** : `{}`
-
-### Or
-
-**Condition** : Authorized User is not Owner of Account at URL.
-
-**Code** : `403 FORBIDDEN`
-
-**Content** : `{}`
-
-
-## Notes
-
-* Will remove memberships for this Account for all Users that had access.
