@@ -21,6 +21,7 @@ server.
 {
     "id": 345,
     "title": "A office",
+    "type": "A Office"
 }
 ```
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Models\Work;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File as FacadeFile;
 use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
@@ -15,9 +14,29 @@ class FileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $files = File::all();
+    public function index(Request $request)
+    {   
+        $files = [];
+        if(empty($request->all())){
+            $files = File::all();
+        }else if(isset($request->office) && isset($request->category) && isset($request->year) && isset($request->month)){
+            $work_id = Work::where('title', $request->category)
+                            ->where('type', $request->office)->first()->id;
+            $files = File::where('work_id', $work_id)
+                            ->whereBetween('upload_date', [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-31'])
+                            ->get();
+        }else{
+            $error = [
+                "message" => "The given data was invalid. Valid query parameters are office, category, year, month",
+                "error" => [
+                    "office: string => The office name",
+                    "category: string => The office work category title",
+                    "year: number => The year of the files created",
+                    "month: number => The month of the files created"
+                ]
+            ];
+            return response()->json($error, 400);
+        }
         return response()->json($files);
     }
 

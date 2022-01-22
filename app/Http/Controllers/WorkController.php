@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Office;
 use App\Models\Work;
 use Illuminate\Http\Request;
 
@@ -29,16 +27,21 @@ class WorkController extends Controller
     {
         $fields = $request->validate([
             'title' => 'required|string',
-            'office_id' => 'required|integer'
+            'type' => 'required|string'
         ]);
+        $works = Work::where('title', $fields['title'])->where('type', $fields['type'])->get();
+        if(count($works) > 0){
+            $error = [
+                "message" => "The given data was invalid.",
+                "error" => [
+                    "Same category in the office already exists"
+                ]
+            ];
+            return response()->json($error, 400);
+        }
 
-        $office = Office::findOrFail($fields['office_id']);
-        $data = $office->works()->create([
-            'title' => $fields['title']
-        ]);
-
-        // $data = Work::create($fields);
-        return response()->json($data);
+        $work = Work::create($fields);
+        return response()->json($work);
     }
 
     /**
@@ -63,7 +66,8 @@ class WorkController extends Controller
     public function update(Request $request, Work $work)
     {
         $fields = $request->validate([
-            'title' => 'required|string'
+            'title' => 'string',
+            'type' => 'string'
         ]);
 
         $work->update($fields);

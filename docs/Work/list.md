@@ -19,14 +19,17 @@ Show all Works.
     {
         "id": 123,
         "title": "A Office",
+        "type": "A Office"
     },
     {
         "id": 124,
         "title": "B Office",
+        "type": "B Office"
     },
     {
         "id": 125,
         "title": "C Office",
+        "type": "C Office"
     }
 ]
 ```

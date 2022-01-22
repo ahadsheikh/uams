@@ -16,7 +16,7 @@ class CreateWorksTable extends Migration
         Schema::create('works', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->unsignedBigInteger('office_id');
+            $table->string('type');
             $table->timestamps();
         });
     }

@@ -8,11 +8,16 @@ Create an Work that can operate some files.
 
 **Auth required** : YES
 
+**Data constraints**
+
+If you give a office and a work title that exists, you will get a existence error.
+
 **Body**
 
 ```json
 {
     "title": "New Work",
+    "type": "A Office",
 }
 ```
 
@@ -26,6 +31,7 @@ Create an Work that can operate some files.
 {
     "id": 123,
     "title": "New Work",
+    "type": "A Office",
 }
 ```
 
@@ -40,6 +46,9 @@ Create an Work that can operate some files.
 ```json
 {
     "title": [
+        "This field is required."
+    ],
+    "type": [
         "This field is required."
     ]
 }

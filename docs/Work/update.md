@@ -15,6 +15,7 @@ Update the Work.
 ```json
 {   
     "title": "A Office Updated",
+    "type": "A Office"
 }
  ```
 
@@ -28,6 +29,7 @@ Update the Work.
 {
     "id": 123,
     "title": "A Office Updated",
+    "type": "A Office"
 }
 ```
 

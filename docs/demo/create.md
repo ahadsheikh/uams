@@ -11,7 +11,7 @@ not already exist. Each User can only have one Account.
 
 **Permissions required** : None
 
-**Data constraints**
+**Data constraints** :
 
 Provide name of Account to be created.
 
