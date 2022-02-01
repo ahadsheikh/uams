@@ -18,7 +18,7 @@ class CreateDaakfilesTable extends Migration
             $table->string('name');
             $table->string('file');
             $table->date('upload_date');
-            $table->string('message');
+            $table->string('message')->nullable();
             $table->string('owner');
             $table->timestamps();
         });

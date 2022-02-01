@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
+
+    private function is_leap_year($year){
+        if ($year % 400 == 0)
+           return true;
+        else if ($year % 100 == 0)
+           return false;
+        else if ($year % 4 == 0)
+           return true;
+        else
+           return false;
+     }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,8 +34,25 @@ class FileController extends Controller
         }else if(isset($request->office) && isset($request->category) && isset($request->year) && isset($request->month)){
             $work_id = Work::where('title', $request->category)
                             ->where('type', $request->office)->first()->id;
+
+            $l31s = [1, 3, 5, 7, 8, 10, 12];
+            $l30s = [4, 6, 9, 11];
+           
+            $last_date = '31';
+            if($request->month == '02' || $request->month == '2'){
+                if($this->is_leap_year((int)$request->year)){
+                    $last_date = '29';
+                }else{
+                    $last_date = '28';
+                }
+            }else if(in_array((int)$request->month, $l31s)){
+                $last_date = '31';
+            }else{
+                $last_date = '30';
+            }
+
             $files = File::where('work_id', $work_id)
-                            ->whereBetween('upload_date', [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-31'])
+                            ->whereBetween('upload_date', [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-'.(string)$last_date])
                             ->get();
         }else{
             $error = [

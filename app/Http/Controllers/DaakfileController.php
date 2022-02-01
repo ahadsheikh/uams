@@ -51,7 +51,7 @@ class DaakfileController extends Controller
             'name' => 'string',
             'file' => 'required|file|mimes:pdf|max:10240',
             'upload_date' => 'required|date_format:Y-m-d',
-            'message' => 'required|string',
+            'message' => 'string',
             'owner' => 'required|string'
         ]);
 
@@ -60,25 +60,12 @@ class DaakfileController extends Controller
         $filePath = 'daakfiles/' . $fileName;
         $file->move(public_path('daakfiles'), $fileName);
 
-        $daakfile = [];
-        if(isset($fields['name'])){
-            $daakfile = Daakfile::create([
-                'name' => $fields['name'],
-                'file' =>  $filePath,
-                'upload_date' => $fields['upload_date'],
-                'message' => $fields['message'],
-                'owner' => $fields['owner']
-            ]);
-        }else{
-            $fields['name'] = substr_replace($fields['file']->getClientOriginalName(), "", -4);
-            $daakfile = Daakfile::create([
-                'name' => substr($fileName, 0, -4),
-                'file' =>  $filePath,
-                'upload_date' => $fields['upload_date'],
-                'message' => $fields['message'],
-                'owner' => $fields['owner']        
-            ]);
+        if(!isset($fields['name'])){
+            $fields['name'] = substr_replace($fields['file']->getClientOriginalName(), "", -4);   
         }
+        $fields['file'] = $filePath;
+        
+        $daakfile = Daakfile::create($fields);
         return response()->json($daakfile);
     }
 
