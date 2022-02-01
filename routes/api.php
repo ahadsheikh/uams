@@ -6,6 +6,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\DaakfileController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\ParadeController;
 use App\Http\Controllers\WorkController;
@@ -72,9 +73,9 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::apiResource('/events', EventController::class);
     Route::apiResource('/paradestates', ParadeStateController::class);
     Route::apiResource('/absences', AbsenceController::class);
-    Route::apiResource('/offices', OfficeController::class);
     Route::apiResource('/works', WorkController::class);
     Route::apiResource('/files', FileController::class);
+    Route::apiResource('/daakfiles', DaakfileController::class);
 
     // Route::get('/files/download/{id}', [FileController::class, 'download']);    
 

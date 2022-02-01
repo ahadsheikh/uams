@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\File;
-use App\Models\Work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Daakfile;
 
-class FileController extends Controller
+class DaakfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,29 +14,29 @@ class FileController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {   
-        $files = [];
+    {
+        $Daakfiles = [];
         if(empty($request->all())){
-            $files = File::all();
-        }else if(isset($request->office) && isset($request->category) && isset($request->year) && isset($request->month)){
-            $work_id = Work::where('title', $request->category)
-                            ->where('type', $request->office)->first()->id;
-            $files = File::where('work_id', $work_id)
+            $Daakfiles = Daakfile::all();
+        }else if(isset($request->owner) && isset($request->year) && isset($request->month)){
+            $Daakfiles = Daakfile::where('owner', $request->owner)
                             ->whereBetween('upload_date', [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-31'])
+                            ->get();
+        }else if(isset($request->year) && isset($request->month)){
+            $Daakfiles = Daakfile::whereBetween('upload_date', [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-31'])
                             ->get();
         }else{
             $error = [
-                "message" => "The given data was invalid. Valid query parameters are office, category, year, month",
+                "message" => "The given daakfile was invalid. Valid query parameters are office, category, year, month",
                 "error" => [
-                    "office: string => The office name",
-                    "category: string => The office work category title",
-                    "year: number => The year of the files created",
-                    "month: number => The month of the files created"
+                    "owner(optional): string => owner of the file",
+                    "year: number => The year of the Daakfiles created",
+                    "month: number => The month of the Daakfiles created"
                 ]
             ];
             return response()->json($error, 400);
         }
-        return response()->json($files);
+        return response()->json($Daakfiles);
     }
 
     /**
@@ -52,57 +51,67 @@ class FileController extends Controller
             'name' => 'string',
             'file' => 'required|file|mimes:pdf|max:10240',
             'upload_date' => 'required|date_format:Y-m-d',
-            'work_id' => 'required|integer'
+            'message' => 'required|string',
+            'owner' => 'required|string'
         ]);
 
-        $work = Work::findOrFail($fields['work_id']);
         $file = $fields['file'];
         $fileName = $file->getClientOriginalName();
-        $filePath = 'officefiles/' . $fileName;
-        $file->move(public_path('officefiles'), $fileName);
+        $filePath = 'daakfiles/' . $fileName;
+        $file->move(public_path('daakfiles'), $fileName);
 
-        $data = [];
+        $daakfile = [];
         if(isset($fields['name'])){
-            $data = $work->files()->create([
+            $daakfile = Daakfile::create([
                 'name' => $fields['name'],
                 'file' =>  $filePath,
-                'upload_date' => $fields['upload_date']
+                'upload_date' => $fields['upload_date'],
+                'message' => $fields['message'],
+                'owner' => $fields['owner']
             ]);
         }else{
             $fields['name'] = substr_replace($fields['file']->getClientOriginalName(), "", -4);
-            $data = $work->files()->create([
+            $daakfile = Daakfile::create([
                 'name' => substr($fileName, 0, -4),
                 'file' =>  $filePath,
-                'upload_date' => $fields['upload_date']            
+                'upload_date' => $fields['upload_date'],
+                'message' => $fields['message'],
+                'owner' => $fields['owner']        
             ]);
         }
-        return response()->json($data);
+        return response()->json($daakfile);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\File  $file
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(File $file)
+    public function show($id)
     {   
+        $file = Daakfile::findOrFail($id);
         return response()->json($file);
     }
+
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\File  $file
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, File $file)
+    public function update(Request $request, $id)
     {
         $fields = $request->validate([
             'name' => 'string',
             'upload_date' => 'date_format:Y-m-d',
+            'message' => 'string',
+            'owner' => 'string'
         ]);
+
+        $file = Daakfile::findOrFail($id);
 
         $file->update($fields);
         return response()->json($file);
@@ -111,24 +120,15 @@ class FileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\File  $file
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(File $file)
+    public function destroy($id)
     {
+        $file = Daakfile::findOrFail($id);
         $path = $file->file;
         Storage::delete($path);
-        //Storage::delete(public_path().$path);
         $file->delete();
         return response()->json(null, 204);
     }
-
-    // public function download($id){
-    //     $file = File::findOrFail($id);
-    //     $headers = array(
-    //           'Content-Type: application/pdf',
-    //         );
-
-    //     return response()->download($file->file, $file->name.'.pdf', $headers);
-    // }
 }

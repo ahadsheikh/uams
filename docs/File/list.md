@@ -4,14 +4,15 @@ Show all Files.
 
 **URL** : `/api/files/`
 
+**Method** : `GET`
+
 **URL Query Parameters** :
 
     * office   : [ office name ]
     * category : [ office work category ]
     * year     : [ file create year ]
     * month    : [ file create month ]
-*Notes* : If you give wrong query parameters, you will get 400 BAD REQUEST. 
-**Method** : `GET`
+*Notes* : If you give wrong query parameters, you will get 400 BAD REQUEST.
 
 **Auth required** : YES
 

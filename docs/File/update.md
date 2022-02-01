@@ -15,9 +15,7 @@ Update the File.
 ```json
 {
     "name": "New file 1",
-    "file": "officefiles/Document.pdf",
     "upload_date": "2020-05-11",
-    "File_id": 1,
 }
  ```
 
