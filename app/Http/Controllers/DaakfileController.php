@@ -8,6 +8,16 @@ use App\Models\Daakfile;
 
 class DaakfileController extends Controller
 {
+    private function is_leap_year($my_year){
+        if ($my_year % 400 == 0)
+           return true;
+        else if ($my_year % 100 == 0)
+           return false;
+        else if ($my_year % 4 == 0)
+           return true;
+        else
+            return false;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,16 +25,47 @@ class DaakfileController extends Controller
      */
     public function index(Request $request)
     {
+        $arr30 = array(4, 6, 9, 11);
+        $arr31 = array(1, 3, 5, 7, 8, 10, 12);
         $Daakfiles = [];
         if(empty($request->all())){
             $Daakfiles = Daakfile::all();
         }else if(isset($request->owner) && isset($request->year) && isset($request->month)){
-            $Daakfiles = Daakfile::where('owner', $request->owner)
+            if(in_array($request->month, $arr30)){
+                $Daakfiles = Daakfile::where('owner', $request->owner)
+                            ->whereBetween('upload_date', [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-30'])
+                            ->get();
+            }else if(in_array($request->month, $arr31)){
+                $Daakfiles = Daakfile::where('owner', $request->owner)
                             ->whereBetween('upload_date', [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-31'])
                             ->get();
-        }else if(isset($request->year) && isset($request->month)){
-            $Daakfiles = Daakfile::whereBetween('upload_date', [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-31'])
+            }else if($this->is_leap_year($request->year)){
+                $Daakfiles = Daakfile::where('owner', $request->owner)
+                            ->whereBetween('upload_date', [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-29'])
                             ->get();
+            }else{
+                $Daakfiles = Daakfile::where('owner', $request->owner)
+                            ->whereBetween('upload_date', [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-28'])
+                            ->get();
+            }
+        }else if(isset($request->year) && isset($request->month)){
+            if(in_array($request->month, $arr30)){
+                $Daakfiles = Daakfile::whereBetween('upload_date', 
+                    [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-30'])
+                    ->get();
+            }else if(in_array($request->month, $arr31)){
+                $Daakfiles = Daakfile::whereBetween('upload_date', 
+                    [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-31'])
+                    ->get();
+            }else if($this->is_leap_year($request->year)){
+                $Daakfiles = Daakfile::whereBetween('upload_date', 
+                    [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-29'])
+                    ->get();
+            }else{
+                $Daakfiles = Daakfile::whereBetween('upload_date', 
+                    [$request->year.'-'.$request->month.'-01', $request->year.'-'.$request->month.'-28'])
+                    ->get();
+            }
         }else{
             $error = [
                 "message" => "The given daakfile was invalid. Valid query parameters are office, category, year, month",
